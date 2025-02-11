@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.melisa_messa.task_manager.config.JwtUtil;
+import org.springframework.http.HttpStatus;
 import com.melisa_messa.task_manager.model.User;
 import com.melisa_messa.task_manager.service.UserService;
 
@@ -31,9 +32,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user){
-        userService.registerUser(user);
-        String token = jwtUtil.generateToken(user.getEmail());
-        return ResponseEntity.ok("Bearer " + token);
+        try {
+            userService.registerUser(user);
+            String token = jwtUtil.generateToken(user.getEmail());
+            return ResponseEntity.ok("Bearer " + token);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
 
     }
 

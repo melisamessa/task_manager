@@ -10,8 +10,12 @@ export const registerUser = async (userData: {
     const token = response.data.split(" ")[1];
     localStorage.setItem("token", token);
     return token;
-  } catch (error) {
-    throw new Error("Error al registrar el usuario.");
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error("Error desconocido al registrar el usuario.");
+    }
   }
 };
 

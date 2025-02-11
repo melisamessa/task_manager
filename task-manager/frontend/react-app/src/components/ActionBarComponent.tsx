@@ -17,7 +17,7 @@ const ActionBarComponent = ({ setView }: Props) => {
       top={150}
       height="70vh"
       width="60px"
-      bg="gray.200"
+      bg="brand.searchBar"
       color="white"
       display="flex"
       flexDirection="column"

@@ -13,8 +13,14 @@ const StatusView = ({ tasks }: Props) => {
 
   return (
     <Flex direction={"row"} gap={3} p={6} paddingLeft={20} pt={1}>
-      <Box bg={"#ffb84d"} w={"25%"} p={4} borderRadius="md" spaceY={2}>
-        <Text fontSize="lg" fontWeight="bold" mb={2}>
+      <Box
+        bg={"brand.statusPending"}
+        w={"25%"}
+        p={4}
+        borderRadius="md"
+        spaceY={2}
+      >
+        <Text textStyle={"otherHeading"} mb={2}>
           Pendientes
         </Text>
         {pendingTasks.length > 0 ? (
@@ -22,11 +28,17 @@ const StatusView = ({ tasks }: Props) => {
             <TaskBox key={task.id} task={task} view={"status_view"} />
           ))
         ) : (
-          <Text>No hay tareas pendientes.</Text>
+          <Text textStyle={"body"}>No hay tareas pendientes.</Text>
         )}
       </Box>
-      <Box bg={"#3f51b5"} w={"25%"} p={4} borderRadius="md" spaceY={2}>
-        <Text fontSize="lg" fontWeight="bold" mb={2}>
+      <Box
+        bg={"brand.statusInProgress"}
+        w={"25%"}
+        p={4}
+        borderRadius="md"
+        spaceY={2}
+      >
+        <Text textStyle={"otherHeading"} mb={2}>
           En Progreso
         </Text>
         {inProgressTasks.length > 0 ? (
@@ -34,11 +46,17 @@ const StatusView = ({ tasks }: Props) => {
             <TaskBox key={task.id} task={task} view={"status_view"} />
           ))
         ) : (
-          <Text>No hay tareas en progreso.</Text>
+          <Text textStyle={"body"}>No hay tareas en progreso.</Text>
         )}
       </Box>
-      <Box bg={"#4caf50"} w={"25%"} p={4} borderRadius="md" spaceY={2}>
-        <Text fontSize="lg" fontWeight="bold" mb={2}>
+      <Box
+        bg={"brand.statusCompleted"}
+        w={"25%"}
+        p={4}
+        borderRadius="md"
+        spaceY={2}
+      >
+        <Text textStyle={"otherHeading"} mb={2}>
           Completadas
         </Text>
         {completedTasks.length > 0 ? (
@@ -46,11 +64,17 @@ const StatusView = ({ tasks }: Props) => {
             <TaskBox key={task.id} task={task} view={"status_view"} />
           ))
         ) : (
-          <Text>No hay tareas completadas.</Text>
+          <Text textStyle={"body"}>No hay tareas completadas.</Text>
         )}
       </Box>
-      <Box bg={"red"} w={"25%"} p={4} borderRadius="md" spaceY={2}>
-        <Text fontSize="lg" fontWeight="bold" mb={2}>
+      <Box
+        bg={"brand.statusCanceled"}
+        w={"25%"}
+        p={4}
+        borderRadius="md"
+        spaceY={2}
+      >
+        <Text textStyle={"otherHeading"} mb={2}>
           Canceladas
         </Text>
         {cancelledTasks.length > 0 ? (
@@ -58,7 +82,7 @@ const StatusView = ({ tasks }: Props) => {
             <TaskBox key={task.id} task={task} view={"status_view"} />
           ))
         ) : (
-          <Text>No hay tareas canceladas.</Text>
+          <Text textStyle={"body"}>No hay tareas canceladas.</Text>
         )}
       </Box>
     </Flex>

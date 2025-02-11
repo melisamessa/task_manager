@@ -1,21 +1,24 @@
 import { Input, IconButton, HStack } from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
 
-const Navbar = () => {
+const SearchBar = () => {
   return (
     <HStack>
       <Input
         placeholder="Buscar tarea"
+        _placeholder={{ color: "brand.inputPlaceholder" }}
         borderRadius={"18px"}
+        borderColor={"brand.inputBorder"}
         w={"400px"}
         shadow={"md"}
-        bg={"white"}
+        bg={"brand.searchBar"}
       ></Input>
       <IconButton
         aria-label="Search database"
-        colorPalette={"black"}
-        color={"white"}
+        color={"iconButton"}
         rounded={"full"}
+        bg={"brand.buttonBg"}
+        _hover={{ bg: "brand.hoverBg" }}
       >
         <LuSearch />
       </IconButton>
@@ -23,4 +26,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SearchBar;

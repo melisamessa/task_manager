@@ -1,20 +1,20 @@
-import {
-  Box,
-  Heading,
-  VStack,
-  Text,
-  HStack,
-  Button,
-  IconButton,
-} from "@chakra-ui/react";
-import { CgMoreO } from "react-icons/cg";
+import { Box, Heading, VStack, Text, HStack, Button } from "@chakra-ui/react";
 
 type Props = {
   task: any;
   view: string;
+  setView?: (view: string) => void;
+  setEditingTask?: (task: any) => void;
 };
 
-const TaskBox = ({ task, view }: Props) => {
+const TaskBox = ({ task, view, setView, setEditingTask }: Props) => {
+  const handleEditClick = () => {
+    if (setView && setEditingTask) {
+      setEditingTask(task);
+      setView("edit_task");
+    }
+  };
+
   return (
     <VStack justifyContent={"center"} w={"full"}>
       <Box
@@ -22,7 +22,7 @@ const TaskBox = ({ task, view }: Props) => {
         w={"90%"}
         h="auto"
         shadow={"md"}
-        bg={"#e8dbd3"}
+        bg="brand.taskBox"
         borderColor={"#e0e0e0"}
         borderStyle={"solid"}
         borderRadius={"md"}
@@ -33,38 +33,57 @@ const TaskBox = ({ task, view }: Props) => {
         <HStack
           justifyContent={["flex-start", "space-between"]}
           alignItems={["flex-start", "center"]}
-          direction={["column", "row"]}
         >
           <VStack align={"start"} spaceY={2}>
-            <Heading size={"md"}>{task.title}</Heading>
-            <Text fontSize={["sm", "md"]} wordBreak="break-word">
+            <Heading textStyle={"taskHeading"} color={"brand.text"}>
+              {task.title}
+            </Heading>
+            <Text
+              fontSize={["sm", "md"]}
+              wordBreak="break-word"
+              textStyle={"body"}
+            >
               {task.description}
             </Text>
           </VStack>
           <VStack spaceY={3}>
-            {view !== "status_view" ? (
-              <>
-                <Text padding={1}>Estado: {task.status}</Text>
-                {task.expiration_date ? (
-                  <Text padding={1}>
-                    Fecha de vencimiento: {task.expiration_date}
+            {
+              view !== "status_view" && view !== "priority_view" ? (
+                <>
+                  <Text padding={1} textStyle={"body"}>
+                    Estado: {task.status}
                   </Text>
-                ) : (
-                  <Text padding={1}>No posee fecha de vencimiento</Text>
-                )}
-                <Button size={["sm", "md"]}>Editar tarea</Button>
-              </>
-            ) : (
-              <IconButton
-                aria-label="Mas información"
-                mb={4}
-                variant="ghost"
-                colorScheme="teal"
-                size={["sm", "md"]}
-              >
-                <CgMoreO />
-              </IconButton>
-            )}
+                  {task.dueDate ? (
+                    <Text padding={1} textStyle={"body"}>
+                      Fecha de vencimiento: {task.dueDate}
+                    </Text>
+                  ) : (
+                    <Text padding={1} textStyle={"body"}>
+                      No posee fecha de vencimiento
+                    </Text>
+                  )}
+                  {setView && setEditingTask && (
+                    <Button
+                      bg={"brand.buttonBg"}
+                      size={["sm", "md"]}
+                      onClick={handleEditClick}
+                      _hover={{ bg: "brand.hoverBg" }}
+                    >
+                      Editar tarea
+                    </Button>
+                  )}
+                </>
+              ) : null
+              // <IconButton
+              //   aria-label="Mas información"
+              //   mb={4}
+              //   variant="ghost"
+              //   colorScheme="teal"
+              //   size={["sm", "md"]}
+              // >
+              //   <CgMoreO />
+              // </IconButton>
+            }
           </VStack>
         </HStack>
       </Box>

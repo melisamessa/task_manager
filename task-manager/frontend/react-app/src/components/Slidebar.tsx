@@ -21,10 +21,12 @@ const Slidebar = () => {
         <IconButton
           variant="outline"
           size="md"
-          bg={"black"}
-          color={"white"}
+          bg={"brand.buttonBg"}
+          color={"brand.iconButton"}
+          border={"none"}
           rounded={"full"}
           marginLeft={"10px"}
+          _hover={{ bg: "brand.hoverBg" }}
         >
           <RxHamburgerMenu />
         </IconButton>

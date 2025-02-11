@@ -21,14 +21,12 @@ public class TaskService {
     }
 
     public Task createTask(Task task, String userEmail){
-        // Buscar el usuario por el email
+        if (task.getTitle() == null || task.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("El título de la tarea es obligatorio");
+        }
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Asociar el usuario con la tarea
         task.setUser(user);
-        
-        // Guardar la tarea en la base de datos
         return taskRepository.save(task);
     }
 
@@ -36,7 +34,6 @@ public class TaskService {
         return taskRepository.findByCategoryId(categoryId);
     }
 
-    // Modificado para aceptar el userId como parámetro en vez de usar @PathVariable
     public List<Task> getTaskByUser(Long userId){
         System.out.println("User ID en el servicio: " + userId);
         return taskRepository.findByUserId(userId);
@@ -46,7 +43,37 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public void deleteTask(Long id){
-        taskRepository.deleteById(id);
+    public void updateTask(Long id, Task updatedTask, User user) {
+
+        if (updatedTask.getTitle() == null || updatedTask.getTitle().trim().isEmpty()) {
+            throw new RuntimeException("El título de la tarea no puede estar vacío");
+        }
+    
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
+
+        if (!existingTask.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("No tienes permiso para editar esta tarea");
+        }
+    
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setDescription(updatedTask.getDescription());
+        existingTask.setDueDate(updatedTask.getDueDate());
+        existingTask.setPriority(updatedTask.getPriority());
+        existingTask.setCategory(updatedTask.getCategory());
+        existingTask.setStatus(updatedTask.getStatus());
+    
+        taskRepository.save(existingTask);
     }
+
+    public void deleteTask(Long id, User user) {
+        Task task = taskRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Tarea no encontrada"));
+    
+        if (!task.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("No tienes permiso para eliminar esta tarea");
+        }
+    
+        taskRepository.deleteById(id);
+    }    
 }

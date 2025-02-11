@@ -1,6 +1,9 @@
 package com.melisa_messa.task_manager.service;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,8 +26,14 @@ public class UserService implements UserDetailsService{
     }
 
     public User registerUser(User user){
+        if (!isValidEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Formato de email inválido");
+        }
         if (user.getName() == null || user.getName().isEmpty()) {
-            user.setName(user.getEmail());
+            throw new IllegalArgumentException("El nombre es obligatorio");
+        }
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("El email ya está registrado");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -44,7 +53,7 @@ public class UserService implements UserDetailsService{
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         
         User user = userRepository.findByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        .orElseThrow(() -> new UsernameNotFoundException("No se encontro usuario con el email: " + email));
 
         return org.springframework.security.core.userdetails.User
             .withUsername(user.getEmail())
@@ -56,6 +65,14 @@ public class UserService implements UserDetailsService{
     public User loadUserByEmail(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
+
+    //AGREGADO VERIFICACIÓN DE EMAIL
+    public boolean isValidEmail(String email){
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
     
 }

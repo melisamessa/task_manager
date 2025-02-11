@@ -23,9 +23,9 @@ function Register() {
     try {
       const userData = { name, email, password };
       await registerUser(userData);
-      alert("Usuario registrado con exito");
-    } catch (err) {
-      setError("Error al registrar el usuario");
+      setError(null);
+    } catch (err: any) {
+      setError(err.message);
     }
   };
   return (
@@ -38,72 +38,77 @@ function Register() {
       borderColor={"gray.300"}
       borderStyle={"solid"}
       borderRadius={"5px"}
-      bg="linear-gradient(to right, #2c3e50, #34495e)"
+      bg="brand.authBox"
     >
       <VStack spaceY={3} align={["flex-start", "center"]} w={"full"}>
         <VStack spaceX={1} align={["flex-start", "center"]} w={"full"}>
-          <Heading color={"white"}>Administrador de tareas</Heading>
+          <Heading textStyle={"title"} color={"brand.text"}>
+            Administrador de tareas
+          </Heading>
         </VStack>
         <Field.Root>
-          <FieldLabel color={"white"}>
-            Nombre <Field.RequiredIndicator />
+          <FieldLabel htmlFor={"nameRegister"} color={"brand.text"}>
+            Nombre
           </FieldLabel>
           <Input
+            id={"nameRegister"}
             rounded={"none"}
             placeholder="Nombre completo"
-            _placeholder={{ color: "gray.300" }}
-            bg={"gray.700"}
-            color={"white"}
+            _placeholder={{ color: "brand.inputPlaceholder" }}
+            bg={"brand.inputBg"}
+            color={"brand.inputText"}
+            borderColor={"brand.inputBorder"}
             onChange={(e) => setName(e.target.value)}
           />
-          <Field.ErrorText color={"white"}>
-            Este campo es requerido
-          </Field.ErrorText>
         </Field.Root>
         <Field.Root>
-          <FieldLabel color={"white"}>
-            E-mail <Field.RequiredIndicator />
+          <FieldLabel htmlFor={"emailRegister"} color={"brand.text"}>
+            E-mail
           </FieldLabel>
           <Input
+            id={"emailRegister"}
             rounded={"none"}
             placeholder="Correo electronico"
-            _placeholder={{ color: "gray.300" }}
-            bg={"gray.700"}
-            color={"white"}
+            _placeholder={{ color: "brand.inputPlaceholder" }}
+            bg={"brand.inputBg"}
+            color={"brand.inputText"}
+            borderColor={"brand.inputBorder"}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Field.ErrorText color={"white"}>
-            Este campo es requerido
-          </Field.ErrorText>
         </Field.Root>
         <Field.Root>
-          <FieldLabel color={"white"}>
+          <FieldLabel htmlFor={"passwordRegister"} color={"brand.text"}>
             Contraseña <Field.RequiredIndicator />
           </FieldLabel>
           <Input
+            id={"passwordRegister"}
             rounded={"none"}
             placeholder={"Ingrese su contraseña"}
-            _placeholder={{ color: "gray.300" }}
+            _placeholder={{ color: "brand.inputPlaceholder" }}
+            bg={"brand.inputBg"}
+            color={"brand.inputText"}
+            borderColor={"brand.inputBorder"}
             type="password"
-            bg={"gray.700"}
-            color={"white"}
             onChange={(e) => setPasword(e.target.value)}
           />
-          <Field.ErrorText color={"white"}>
-            Este campo es requerido
-          </Field.ErrorText>
         </Field.Root>
         <Button
           w={"full"}
-          bg={"white"}
+          bg={"brand.buttonBg"}
           color={"black"}
           onClick={handleRegister}
+          _hover={{ bg: "brand.hoverBg" }}
         >
           Registrarte
         </Button>
+        {error && (
+          <Text color={"brand.errorText"} textStyle={"errorText"}>
+            {error}
+          </Text>
+        )}
         <HStack w={"full"} justifyContent={"flex-start"}>
           <Link to="/">
-            <Text color={"white"} textDecoration={"underline"}>
+            <Text color={"brand.text"} textDecoration={"underline"}>
               ¿Tienes una cuenta? Inicia sesión
             </Text>
           </Link>

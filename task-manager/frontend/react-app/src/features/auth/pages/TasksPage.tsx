@@ -7,7 +7,6 @@ import StatusView from "../../../components/StatusView";
 import ListView from "../../../components/ListView";
 import CalendarView from "../../../components/CalendarView";
 import PriorityView from "../../../components/PriorityView";
-import CategoryView from "../../../components/CategoryView";
 import StatsView from "../../../components/StatsView";
 import TaskFormView from "../../../components/TaskFormView";
 
@@ -67,7 +66,6 @@ const TasksPage = () => {
       )}
       {view === "calendar_view" && <CalendarView tasks={tasks} />}
       {view === "priority_view" && <PriorityView tasks={tasks} />}
-      {view === "category_view" && <CategoryView />}
       {view === "statics_view" && <StatsView />}
       {(view === "new_task" || view === "edit_task") && (
         <TaskFormView

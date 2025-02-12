@@ -10,6 +10,7 @@ type Props = {
 };
 
 const ListView = ({ tasks, loading, view, setView, setEditingTask }: Props) => {
+  console.log(tasks);
   return (
     <Flex w={"full"} pt={0} justifyContent={"center"} ml={"10"} mt={"0"}>
       {loading ? (

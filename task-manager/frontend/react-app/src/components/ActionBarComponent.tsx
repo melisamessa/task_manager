@@ -1,6 +1,6 @@
 import { Box, IconButton } from "@chakra-ui/react";
 import { IoIosAddCircle } from "react-icons/io";
-import { FaCalendarAlt, FaStar, FaTag } from "react-icons/fa";
+import { FaCalendarAlt, FaStar } from "react-icons/fa";
 import { ImStatsBars } from "react-icons/im";
 import { RiListView } from "react-icons/ri";
 import { MdOutlinePendingActions } from "react-icons/md";
@@ -15,7 +15,7 @@ const ActionBarComponent = ({ setView }: Props) => {
       position="fixed"
       left={3}
       top={150}
-      height="70vh"
+      height="50vh"
       width="60px"
       bg="brand.searchBar"
       color="white"
@@ -71,16 +71,7 @@ const ActionBarComponent = ({ setView }: Props) => {
       >
         <FaStar />
       </IconButton>
-      <IconButton
-        aria-label="Vista por categoría"
-        mb={4}
-        variant="ghost"
-        colorScheme="teal"
-        onClick={() => setView("category_view")}
-      >
-        <FaTag />
-      </IconButton>
-      <IconButton
+      {/* <IconButton
         aria-label="Estadísticas"
         mb={4}
         variant="ghost"
@@ -88,7 +79,7 @@ const ActionBarComponent = ({ setView }: Props) => {
         onClick={() => setView("statics_view")}
       >
         <ImStatsBars />
-      </IconButton>
+      </IconButton> */}
     </Box>
   );
 };

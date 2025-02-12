@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import SelectCategory from "./SelectCategory";
 
 const StatsView = () => {
   return (

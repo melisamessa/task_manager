@@ -7,18 +7,11 @@ import {
   Input,
   VStack,
   HStack,
-  SelectRoot,
-  SelectLabel,
-  SelectTrigger,
-  SelectValueText,
-  SelectContent,
-  SelectItem,
-  createListCollection,
   Text,
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "../components/ui/radio";
 import { FaChevronDown } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createTask } from "../features/auth/services/TaskService";
 import { useNavigate } from "react-router-dom";
 
@@ -33,8 +26,8 @@ const NewTaskForm = ({ fetchTasks, setView }: Props) => {
   const [status, setStatus] = useState("0");
   const [priority, setPriority] = useState("0");
   const [expirationDate, setExpirationDate] = useState<string | null>(null);
-  const [category, setCategory] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [categoryId, setCategoryId] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const handleStatusChange = (newStatus: string) => {
@@ -52,10 +45,9 @@ const NewTaskForm = ({ fetchTasks, setView }: Props) => {
       status,
       priority,
       dueDate: expirationDate,
-      category,
     };
     try {
-      const response = await createTask(taskData);
+      await createTask(taskData);
       fetchTasks();
       setError(null);
       setView("list_view");
@@ -166,31 +158,6 @@ const NewTaskForm = ({ fetchTasks, setView }: Props) => {
             onChange={(e) => setExpirationDate(e.target.value)}
           />
         </Field.Root>
-        <SelectRoot collection={frameworks} size={"sm"} width={"320px"}>
-          <SelectLabel
-            htmlFor={"category"}
-            color={"brand.text"}
-            textAlign={"left"}
-          >
-            Seleccionar categoría
-          </SelectLabel>
-          <SelectTrigger
-            id={"category"}
-            bg={"brand.inputBg"}
-            border={"brand.inputBorder"}
-            color={"brand.inputText"}
-          >
-            <SelectValueText placeholder={"Categoría"} />
-            <FaChevronDown />
-          </SelectTrigger>
-          <SelectContent>
-            {frameworks.items.map((movie) => (
-              <SelectItem item={movie} key={movie.value}>
-                {movie.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
         <Button
           onClick={handleSubmit}
           _hover={{ bg: "brand.hoverBg" }}
@@ -207,13 +174,5 @@ const NewTaskForm = ({ fetchTasks, setView }: Props) => {
     </Box>
   );
 };
-
-const frameworks = createListCollection({
-  items: [
-    { label: "Trabajo", value: "work" },
-    { label: "Universidad", value: "university" },
-    { label: "En casa", value: "home" },
-  ],
-});
 
 export default NewTaskForm;

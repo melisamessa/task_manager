@@ -26,7 +26,6 @@ const EditTaskForm = ({ task, setView, fetchTasks }: Props) => {
   const [status, setStatus] = useState(task.status);
   const [priority, setPriority] = useState(task.priority);
   const [expirationDate, setExpirationDate] = useState(task?.dueDate || "");
-  const [category, setCategory] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -45,10 +44,9 @@ const EditTaskForm = ({ task, setView, fetchTasks }: Props) => {
       status,
       priority,
       dueDate: expirationDate,
-      category,
     };
     try {
-      const response = await updateTask(taskData, task.id);
+      await updateTask(taskData, task.id);
       fetchTasks();
       setError(null);
       setView("list_view");
@@ -60,7 +58,7 @@ const EditTaskForm = ({ task, setView, fetchTasks }: Props) => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteTask(task.id);
+      await deleteTask(task.id);
       fetchTasks();
       setError(null);
       setView("list_view");

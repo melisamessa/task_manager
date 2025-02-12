@@ -47,43 +47,32 @@ const TaskBox = ({ task, view, setView, setEditingTask }: Props) => {
             </Text>
           </VStack>
           <VStack spaceY={3}>
-            {
-              view !== "status_view" && view !== "priority_view" ? (
-                <>
+            {view !== "status_view" && view !== "priority_view" ? (
+              <>
+                <Text padding={1} textStyle={"body"}>
+                  Estado: {task.status}
+                </Text>
+                {task.dueDate ? (
                   <Text padding={1} textStyle={"body"}>
-                    Estado: {task.status}
+                    Fecha de vencimiento: {task.dueDate}
                   </Text>
-                  {task.dueDate ? (
-                    <Text padding={1} textStyle={"body"}>
-                      Fecha de vencimiento: {task.dueDate}
-                    </Text>
-                  ) : (
-                    <Text padding={1} textStyle={"body"}>
-                      No posee fecha de vencimiento
-                    </Text>
-                  )}
-                  {setView && setEditingTask && (
-                    <Button
-                      bg={"brand.buttonBg"}
-                      size={["sm", "md"]}
-                      onClick={handleEditClick}
-                      _hover={{ bg: "brand.hoverBg" }}
-                    >
-                      Editar tarea
-                    </Button>
-                  )}
-                </>
-              ) : null
-              // <IconButton
-              //   aria-label="Mas información"
-              //   mb={4}
-              //   variant="ghost"
-              //   colorScheme="teal"
-              //   size={["sm", "md"]}
-              // >
-              //   <CgMoreO />
-              // </IconButton>
-            }
+                ) : (
+                  <Text padding={1} textStyle={"body"}>
+                    No posee fecha de vencimiento
+                  </Text>
+                )}
+                {setView && setEditingTask && (
+                  <Button
+                    bg={"brand.buttonBg"}
+                    size={["sm", "md"]}
+                    onClick={handleEditClick}
+                    _hover={{ bg: "brand.hoverBg" }}
+                  >
+                    Editar tarea
+                  </Button>
+                )}
+              </>
+            ) : null}
           </VStack>
         </HStack>
       </Box>

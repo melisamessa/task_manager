@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface TaskRepository extends JpaRepository<Task, Long>{
-    List<Task> findByCategoryId(Long categoryId);
 
     List<Task> findByUserId(@Param("userId") Long userId);
+    List<Task> findByProjectId(@Param("projectId") Long projectId);
 }

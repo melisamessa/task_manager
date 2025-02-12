@@ -24,7 +24,7 @@ const Login = () => {
     try {
       const userData = { email, password };
       const response = await loginUser(userData);
-      navigate("/tasks");
+      navigate("/dashboard");
     } catch (err) {
       setError("Error: Email o contraseña incorrectos");
     }

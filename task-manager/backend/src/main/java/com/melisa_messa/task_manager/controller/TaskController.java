@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
-import com.melisa_messa.task_manager.model.Task;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.melisa_messa.task_manager.service.UserService;
-import com.melisa_messa.task_manager.model.User;
+import com.melisa_messa.task_manager.model.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
@@ -47,11 +47,6 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/category/{category_id}")
-    public List<Task> getTaskByCategory(@PathVariable("category_id") Long categoryId){
-        return taskService.getTaskByCategory(categoryId);
-    }
-
     @GetMapping("/user")
     public List<Task> getTasksByUserId(@AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails) {
         String userEmail = userDetails.getUsername();
@@ -63,6 +58,18 @@ public class TaskController {
     @GetMapping("/{id}")
     public Optional<Task> getTaskById(@PathVariable("id") Long id){
         return taskService.getTaskById(id);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public List<Task> getTaskByProjectId(@PathVariable Long projectId, @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails) {
+        if (userDetails == null){
+            return null;
+        }
+        
+        String userEmail = userDetails.getUsername();
+        User user = userService.loadUserByEmail(userEmail);
+        
+        return taskService.getTaskByProjectId(projectId, user);
     }
 
     @PutMapping("/{id}")
@@ -97,4 +104,37 @@ public class TaskController {
         return ResponseEntity.ok().body("Tarea eliminada correctamente");
     }
 
+    @PutMapping("/{id}/assign/{projectId}")
+    public ResponseEntity<String> assignTaskToProject(@PathVariable Long id, @PathVariable Long projectId, @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails){
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuario no autenticado");
+        }
+
+        String userEmail = userDetails.getUsername();
+        User user = userService.loadUserByEmail(userEmail);
+
+        try {
+            taskService.assignTaskToProject(id, projectId, user);
+            return ResponseEntity.ok().body("Proyecto asignado correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}/unassign")
+    public ResponseEntity<String> unassignTaskToProject(@PathVariable Long id, @AuthenticationPrincipal org.springframework.security.core.userdetails.User userDetails){
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuario no autenticado");
+        }
+
+        String userEmail = userDetails.getUsername();
+        User user = userService.loadUserByEmail(userEmail);
+
+        try {
+            taskService.unassignTaskToProject(id, user);
+            return ResponseEntity.ok().body("Relación Tarea-Proyecto eliminada correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }

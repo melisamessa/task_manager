@@ -24,7 +24,6 @@ export const createTask = async (taskData: {
   status: string;
   priority: string;
   dueDate: string | null;
-  category: string | null;
 }) => {
   try {
     const token = localStorage.getItem("token");
@@ -33,7 +32,7 @@ export const createTask = async (taskData: {
       throw new Error("Token no encontrado.");
     }
 
-    const response = await axiosClient.post("/tasks/create", taskData, {
+    const response = await axiosClient.post(`/tasks/create`, taskData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -56,7 +55,6 @@ export const updateTask = async (
     status: string;
     priority: string;
     dueDate: string | null;
-    category: string | null;
   },
   taskId: number
 ) => {
